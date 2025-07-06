@@ -11,7 +11,7 @@ pipeline {
     stage('Copy HTML Files and Dockerfile to EC2') {
       steps {
         sh '''
-          scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no -r html ubuntu@98.130.85.211:/home/ubuntu/
+          scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no -r build ubuntu@98.130.85.211:/home/ubuntu/
           scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no Dockerfile.httpd ubuntu@98.130.85.211:/home/ubuntu/
         '''
       }
