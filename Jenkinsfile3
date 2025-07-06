@@ -24,7 +24,7 @@ pipeline {
       steps {
         sh '''
           scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no -r build ubuntu@98.130.85.211:/home/ubuntu/
-          scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no Dockerfile.httpd ubuntu@98.130.85.211:/home/ubuntu/
+          scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no Dockerfile ubuntu@98.130.85.211:/home/ubuntu/
         '''
       }
     }
@@ -36,7 +36,7 @@ pipeline {
             cd /home/ubuntu &&
             docker stop my-httpd-app || true &&
             docker rm my-httpd-app || true &&
-            docker build -t my-httpd-app -f Dockerfile.httpd . &&
+            docker build -t my-httpd-app -f Dockerfile . &&
             docker run -d --name my-httpd-app -p 8087:80 my-httpd-app
           '
         '''
