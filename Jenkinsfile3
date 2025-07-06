@@ -4,11 +4,23 @@ pipeline {
   stages {
     stage('Checkout Code') {
       steps {
-        git branch: 'main', url: 'https://github.com/tirupdev/reactjs_ec2-jenkins.git'
+        git branch: 'main', url: 'https://github.com/tirupdev/PreDeveloped-reactjs.git'
       }
     }
 
-    stage('Copy HTML Files and Dockerfile to EC2') {
+    stage('Install Dependencies') {
+      steps {
+        sh 'npm install'
+      }
+    }
+
+    stage('Build React App') {
+      steps {
+        sh 'npm run build'
+      }
+    }
+
+    stage('Copy Build and Dockerfile to EC2') {
       steps {
         sh '''
           scp -i /var/lib/jenkins/.ssh/3july.pem -o StrictHostKeyChecking=no -r build ubuntu@98.130.85.211:/home/ubuntu/
@@ -24,8 +36,8 @@ pipeline {
             cd /home/ubuntu &&
             docker stop my-httpd-app || true &&
             docker rm my-httpd-app || true &&
-            docker build -t my-httpd -f Dockerfile . &&
-            docker run -d --name my-httpd-app -p 8087:80 my-httpd
+            docker build -t my-httpd-app -f Dockerfile.httpd . &&
+            docker run -d --name my-httpd-app -p 8087:80 my-httpd-app
           '
         '''
       }
